@@ -58,11 +58,12 @@ void loop()
             myGLCD.setBackColor(64, 64, 64);
             myGLCD.setColor(255, 255, 0);
             myGLCD.print(lng, LEFT, 116);
+
             pixels.clear();
             pixels.setBrightness(10);
             pixels.setPixelColor(0, pixels.Color(255, 255, 255));
             pixels.setPixelColor(1, pixels.Color(255, 0, 0));
-           
+            pixels.show();
 
         }
     }
