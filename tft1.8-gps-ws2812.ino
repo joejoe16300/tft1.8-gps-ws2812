@@ -17,7 +17,8 @@ static const uint32_t GPSBaud = 9600;
 
 // The TinyGPS++ object
 TinyGPSPlus gps;
-extern uint8_t SmallFont[];
+extern uint8_t BigFont[];
+
 // The serial connection to the GPS device
 SoftwareSerial ss(RXPin, TXPin);
 // the setup function runs once when you press reset or power the board
@@ -31,12 +32,15 @@ void setup()
     ss.begin(GPSBaud);
     pixels.begin();
     myGLCD.InitLCD(PORTRAIT);
-    myGLCD.setFont(SmallFont);
+    myGLCD.setFont(BigFont);
+   
 }
 
 // the loop function runs over and over again until power down or reset
 void loop() 
 {
+
+    
     while (ss.available() > 0)
     {
         gps.encode(ss.read());
@@ -46,18 +50,39 @@ void loop()
             Serial.print(gps.location.lat(), 6);
             Serial.print(" Longitude= ");
             Serial.println(gps.location.lng(), 6);
+
+            // Number of satellites in use (u32)
+            Serial.print("Number os satellites in use = ");
+            Serial.println(gps.satellites.value());
+
+            // Speed in kilometers per hour (double)
+            Serial.print("Speed in km/h = ");
+            Serial.println(gps.speed.kmph());
+
             String lat = String(gps.location.lat());
             String lng = String(gps.location.lng());
+            String use = String(gps.satellites.value());
+            String speed = String(gps.speed.kmph());
+
             // Clear the screen and draw the frame
             myGLCD.clrScr();
-            myGLCD.setContrast(64);
+            myGLCD.setContrast(64);//¶Ô±È¶È
 
-            myGLCD.setColor(255, 0, 0);
+            myGLCD.setColor(220, 20, 60);// 	
+
+            myGLCD.print(lat, LEFT, 5);
            
-            myGLCD.print(lat, CENTER, 0);
-            myGLCD.setBackColor(64, 64, 64);
-            myGLCD.setColor(255, 255, 0);
-            myGLCD.print(lng, LEFT, 116);
+            myGLCD.print(lng, LEFT, 20);
+            myGLCD.print(use, 105, 5);
+
+
+            
+
+            myGLCD.print(speed, CENTER, 45);
+
+            
+
+
 
             pixels.clear();
             pixels.setBrightness(10);
